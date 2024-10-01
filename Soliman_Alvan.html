@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Delivery Form</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+</head>
+<body>
+    <ion-app>
+        <ion-header>
+            <ion-toolbar color="primary">
+                <ion-title>Order Delivery Form</ion-title>
+            </ion-toolbar>
+        </ion-header>
+
+        <ion-content class="ion-padding">
+            <ion-item>
+                <ion-input id="address" label="Delivery Address" label-placement="floating" type="text"></ion-input>
+            </ion-item>
+
+            <ion-item>
+                <ion-select id="pm" label="Payment Method" placeholder="Select payment method">
+                    <ion-select-option value="paypal">Paypal</ion-select-option>
+                    <ion-select-option value="credit">Credit Card</ion-select-option>
+                    <ion-select-option value="cash">Cash on Hand</ion-select-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item>
+                <ion-checkbox id="spm">Save Payment Method</ion-checkbox>
+            </ion-item>
+
+            <ion-item id="cashInput" style="display: none;">
+                <ion-input id="cash" label="Cash On Hand" label-placement="floating" type="number"></ion-input>
+            </ion-item>
+
+            <ion-button expand="block" onclick="submitOrder()">Submit Order</ion-button>
+
+            <ion-card>
+                <ion-card-header>
+                    <ion-card-title>Receipt</ion-card-title>
+                </ion-card-header>
+                <ion-card-content id="receipt"></ion-card-content>
+            </ion-card>
+        </ion-content>
+    </ion-app>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('pm').addEventListener('ionChange', function(event) {
+                if (event.detail.value === 'cash') {
+                    document.getElementById('cashInput').style.display = 'block';
+                } else {
+                    document.getElementById('cashInput').style.display = 'none';
+                }
+            });
+        });
+
+        function submitOrder() {
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.getElementById('pm').value;
+            const savePayment = document.getElementById('spm').checked;
+            const cashAmount = document.getElementById('cash').value;
+
+            let receipt = 'Address: ' + address + '<br>';
+            
+            receipt += 'Payment Method: ' + paymentMethod + '<br>';
+
+            if (paymentMethod === 'cash') {
+                receipt += 'Cash Amount: ' + cashAmount + '<br>';
+            }
+
+            if (savePayment) {
+                receipt += 'Payment Method will be saved.';
+            } else {
+                receipt += 'Your payment method has not been saved!';
+            }
+
+            document.getElementById('receipt').innerHTML = receipt;
+        }
+    </script>
+</body>
+</html>
